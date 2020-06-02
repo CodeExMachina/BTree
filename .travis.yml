@@ -3,4 +3,4 @@ solution: btree.sln
 mono: none
 dotnet: 3.1.300
 script:
- - dotnet restore
+ - dotnet build
