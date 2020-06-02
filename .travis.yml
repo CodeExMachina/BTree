@@ -1,2 +1,6 @@
 ﻿language: csharp
 solution: btree.sln
+mono: none
+dotnet: 3.1.4
+script:
+ - dotnet restore
