@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -290,12 +289,15 @@ namespace btree_test
 
         private bool DeepEqual(IEnumerable<Item> a, IEnumerable<Item> b)
         {
-            List<Item> al = a.ToList();
-            List<Item> bl = b.ToList();
+            List<Item> al = new List<Item>(a);
+            List<Item> bl = new List<Item>(b);
+
+            if (al.Count != bl.Count)
+                return false;
 
             bool success = true;
 
-            for (int i = 0; i < a.Count(); ++i)
+            for (int i = 0; i < al.Count; ++i)
             {
                 Int obj1 = (Int)al[i];
                 Int obj2 = (Int)bl[i];
@@ -450,12 +452,10 @@ namespace btree_test
             {
                 got.Add(v);
             }
-            got.Reverse();
-            /*for(int i = 0; i < got.Count / 2; i++) 
-            {
-                got[i] = got[got.Count - i - 1];
-                got[got.Count - i - 1] = got[i];
-            }*/
+            for(int i = 0; i < got.Count / 2; i++) 
+            {                
+                (got[i], got[got.Count - i - 1]) = (got[got.Count - i - 1], got[i]);                
+            }
             List<Item> want = Rang(100);
             if (!DeepEqual(got, want))
             {
@@ -477,7 +477,7 @@ namespace btree_test
                 got.Add(a);
                 return true;
             });
-            IEnumerable<Item> want = Rang(100).Skip(40).Take(60 - 40);
+            IEnumerable<Item> want = Rang(100).GetRange(40, 60 - 40);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"ascendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -493,7 +493,7 @@ namespace btree_test
                 got.Add(a);
                 return true;
             });
-            want = Rang(100).Skip(40).Take(51 - 40);
+            want = Rang(100).GetRange(40, 51 - 40);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"ascendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -514,7 +514,7 @@ namespace btree_test
                 got.Add(a);
                 return true;
             });
-            IEnumerable<Item> want = RangRev(100).Skip(39).Take(59 - 39);
+            IEnumerable<Item> want = RangRev(100).GetRange(39, 59 - 39);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"descendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -530,7 +530,7 @@ namespace btree_test
                 got.Add(a);
                 return true;
             });
-            want = RangRev(100).Skip(39).Take(50 - 39);
+            want = RangRev(100).GetRange(39, 50 - 39);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"descendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -551,7 +551,7 @@ namespace btree_test
                 got.Add(a);
                 return true;
             });
-            IEnumerable<Item> want = Rang(100).Take(60);
+            IEnumerable<Item> want = Rang(100).GetRange(0, 60);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"ascendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -567,7 +567,7 @@ namespace btree_test
                 got.Add(a);
                 return true;
             });
-            want = Rang(100).Take(51);
+            want = Rang(100).GetRange(0, 51);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"ascendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -588,7 +588,7 @@ namespace btree_test
                 got.Add(a);
                 return true;
             });
-            IEnumerable<Item> want = RangRev(100).Skip(59).Take(100 - 59);
+            IEnumerable<Item> want = RangRev(100).GetRange(59, 100 - 59);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"descendlessorequal:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -604,7 +604,7 @@ namespace btree_test
                 got.Add(a);
                 return true;
             });
-            want = RangRev(100).Skip(39).Take(50 - 39);
+            want = RangRev(100).GetRange(39, 50 - 39);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"descendlessorequal:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -625,7 +625,7 @@ namespace btree_test
                 got.Add(a);
                 return true;
             });
-            IEnumerable<Item> want = Rang(100).Skip(40).Take(100 - 40);
+            IEnumerable<Item> want = Rang(100).GetRange(40, 100 - 40);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"ascendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -641,7 +641,7 @@ namespace btree_test
                 got.Add(a);
                 return true;
             });
-            want = Rang(100).Skip(40).Take(51 - 40);
+            want = Rang(100).GetRange(40, 51 - 40);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"ascendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -662,7 +662,7 @@ namespace btree_test
                 got.Add(a);
                 return true;
             });
-            IEnumerable<Item> want = RangRev(100).Take(59);
+            IEnumerable<Item> want = RangRev(100).GetRange(0, 59);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"descendgreaterthan:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -678,7 +678,7 @@ namespace btree_test
                 got.Add(a);
                 return true;
             });
-            want = RangRev(100).Take(50);
+            want = RangRev(100).GetRange(0, 50);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"descendgreaterthan:\n got: {got.Dump()}\nwant: {want.Dump()}");
