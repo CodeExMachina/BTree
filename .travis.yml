@@ -4,3 +4,4 @@ mono: none
 dotnet: 3.1.300
 script:
  - dotnet build
+ - dotnet test
