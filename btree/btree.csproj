@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>CodeExMachina.BTree</PackageId>
+    <Authors>Code Ex Machina, LLC</Authors>
+    <Copyright>Copyright © Code Ex Machina, LLC</Copyright>
+    <Owners>Code Ex Machina, LLC</Owners>
+    <PackageProjectUrl>https://github.com/CodeExMachina/BTree</PackageProjectUrl>
+    <Title>BTree implementation for C#</Title>
+    <Description>This package provides an in-memory B-Tree implementation for C#, useful as an ordered, mutable data structure.</Description>
+    <RootNamespace>CodeExMachina</RootNamespace>
+    <PackOnBuild>true</PackOnBuild>
   </PropertyGroup>
 
 </Project>
