@@ -1,6 +1,6 @@
 ﻿# BTree implementation for C#
 
-![Travis CI Build Status](https://api.travis-ci.org/CodeExMachina/BTree.svg?branch=master)
+![Travis CI Build Status](https://travis-ci.org/CodeExMachina/BTree.svg?branch=master)
 
 This package provides an in-memory B-Tree implementation for C#, useful as
 an ordered, mutable data structure.
