@@ -1,24 +1,24 @@
-﻿/// Copyright (c) 2020 Code Ex Machina, LLC. All rights reserved.
-///
-/// This program is free software: you can redistribute it and/or modify
-/// it under the terms of the GNU General Public License as published by
-/// the Free Software Foundation, either version 3 of the License, or
-/// (at your option) any later version.
-///
-/// This program is distributed in the hope that it will be useful,
-/// but WITHOUT ANY WARRANTY; without even the implied warranty of
-/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
-/// GNU General Public License for more details.
-///
-/// You should have received a copy of the GNU General Public License
-/// along with this program.If not, see <https://www.gnu.org/licenses/>.
+﻿// Copyright (c) 2020 Code Ex Machina, LLC. All rights reserved.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.If not, see <https://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace CodeExMachina
-{ 
+{
     /// <summary>
     /// Item represents a single object in the tree.
     /// </summary>
@@ -28,7 +28,7 @@ namespace CodeExMachina
         /// Less tests whether the current item is less than the given argument.
         /// 
         /// This must provide a strict weak ordering.
-        /// If !a.Less(b) && !b.Less(a), we treat this to mean a == b (i.e. we can only
+        /// If !a.Less(b) &amp;&amp; !b.Less(a), we treat this to mean a == b (i.e. we can only
         /// hold one of either a or b in the tree).
         /// </summary>
         /// <param name="than"></param>
@@ -76,20 +76,20 @@ namespace CodeExMachina
 
         internal Node NewNode()
         {
-            lock(_mu)
+            lock (_mu)
             {
                 int index = _freelist.Count - 1;
-                
-                if(index < 0)
+
+                if (index < 0)
                 {
                     return new Node();
                 }
 
                 Node n = _freelist[index];
-                
+
                 _freelist[index] = null;
                 _freelist.RemoveAt(index);
-                
+
                 return n;
             }
         }
@@ -101,12 +101,12 @@ namespace CodeExMachina
         /// <param name="n"></param>
         /// <returns></returns>
         internal bool FreeNode(Node n)
-        {            
+        {
             bool success = false;
 
             lock (_mu)
             {
-                if(_freelist.Count < _freelist.Capacity)
+                if (_freelist.Count < _freelist.Capacity)
                 {
                     _freelist.Add(n);
                     success = true;
@@ -115,7 +115,7 @@ namespace CodeExMachina
 
             return success;
         }
-    }    
+    }
 
     /// <summary>
     /// ItemIterator allows callers of Ascend* to iterate in-order over portions of
@@ -131,11 +131,11 @@ namespace CodeExMachina
     /// </summary>
     internal class Items : IEnumerable<Item>
     {
-        private readonly List<Item> _items = new List<Item>();        
-        private readonly ItemComparer _comparer = new ItemComparer();        
+        private readonly List<Item> _items = new List<Item>();
+        private readonly ItemComparer _comparer = new ItemComparer();
 
         public int Length => _items.Count;
-        public int Capacity => _items.Capacity;        
+        public int Capacity => _items.Capacity;
 
         /// <summary>
         /// Inserts a value into the given index, pushing all subsequent values
@@ -145,7 +145,7 @@ namespace CodeExMachina
         /// <param name="item"></param>
         public void InsertAt(int index, Item item)
         {
-            _items.Insert(index, item);            
+            _items.Insert(index, item);
         }
 
         /// <summary>
@@ -182,10 +182,10 @@ namespace CodeExMachina
         public void Truncate(int index)
         {
             int count = _items.Count - index;
-            if(count > 0)
+            if (count > 0)
             {
                 _items.RemoveRange(index, count);
-            }            
+            }
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace CodeExMachina
     /// </summary>
     internal class Children : IEnumerable<Node>
     {
-        private readonly List<Node> _children = new List<Node>();         
+        private readonly List<Node> _children = new List<Node>();
 
         public int Length => _children.Count;
         public int Capacity => _children.Capacity;
@@ -264,7 +264,7 @@ namespace CodeExMachina
         /// <param name="item"></param>
         public void InsertAt(int index, Node item)
         {
-            _children.Insert(index, item);           
+            _children.Insert(index, item);
         }
 
         /// <summary>
@@ -341,7 +341,7 @@ namespace CodeExMachina
     /// <summary>
     /// Details what item to remove in a node.remove call.
     /// </summary>
-    public enum ToRemove
+    internal enum ToRemove
     {
         /// <summary>
         /// removes the given item
@@ -356,7 +356,8 @@ namespace CodeExMachina
         /// </summary>
         RemoveMax
     }
-    public enum Direction
+
+    internal enum Direction
     {
         Descend = -1,
         Ascend = 1
@@ -414,7 +415,7 @@ namespace CodeExMachina
             Node next = Cow.NewNode();
             next.Items.Append(Items.GetRange(i + 1, Items.Length - (i + 1)));
             Items.Truncate(i);
-            if(Children.Length > 0)
+            if (Children.Length > 0)
             {
                 next.Children.Append(Children.GetRange(i + 1, Children.Length - (i + 1)));
                 Children.Truncate(i + 1);
@@ -431,7 +432,7 @@ namespace CodeExMachina
         /// <returns></returns>
         public bool MaybeSplitChild(int i, int maxItems)
         {
-            if(Children[i].Items.Length < maxItems)
+            if (Children[i].Items.Length < maxItems)
             {
                 return false;
             }
@@ -453,25 +454,25 @@ namespace CodeExMachina
         public Item Insert(Item item, int maxItems)
         {
             (int i, bool found) = Items.Find(item);
-            if(found)
+            if (found)
             {
                 Item n = Items[i];
                 Items[i] = item;
                 return n;
             }
-            if(Children.Length == 0)
+            if (Children.Length == 0)
             {
                 Items.InsertAt(i, item);
                 return null;
             }
-            if(MaybeSplitChild(i, maxItems))
+            if (MaybeSplitChild(i, maxItems))
             {
                 Item inTree = Items[i];
-                if(item.Less(inTree))
+                if (item.Less(inTree))
                 {
                     // no change, we want first split node
                 }
-                else if(inTree.Less(item))
+                else if (inTree.Less(item))
                 {
                     i++; // we want second split node
                 }
@@ -493,11 +494,11 @@ namespace CodeExMachina
         public Item Get(Item key)
         {
             (int i, bool found) = Items.Find(key);
-            if(found)
+            if (found)
             {
                 return Items[i];
-            } 
-            else if(Children.Length > 0)
+            }
+            else if (Children.Length > 0)
             {
                 return Children[i].Get(key);
             }
@@ -515,7 +516,7 @@ namespace CodeExMachina
             {
                 return null;
             }
-            while(n.Children.Length > 0)
+            while (n.Children.Length > 0)
             {
                 n = n.Children[0];
             }
@@ -551,11 +552,11 @@ namespace CodeExMachina
         {
             int i = 0;
             bool found = false;
-            switch(typ)
+            switch (typ)
             {
                 case ToRemove.RemoveMax:
                     {
-                        if(Children.Length == 0)
+                        if (Children.Length == 0)
                         {
                             return Items.Pop();
                         }
@@ -574,7 +575,7 @@ namespace CodeExMachina
                 case ToRemove.RemoveItem:
                     {
                         (i, found) = Items.Find(item);
-                        if(Children.Length == 0)
+                        if (Children.Length == 0)
                         {
                             return found ? Items.RemoveAt(i) : null;
                         }
@@ -636,7 +637,7 @@ namespace CodeExMachina
         /// <returns></returns>
         public Item GrowChildAndRemove(int i, Item item, int minItems, ToRemove typ)
         {
-            if(i > 0 && Children[i-1].Items.Length > minItems)
+            if (i > 0 && Children[i - 1].Items.Length > minItems)
             {
                 // Steal from left child
                 Node child = MutableChild(i);
@@ -644,12 +645,12 @@ namespace CodeExMachina
                 Item stolenItem = stealFrom.Items.Pop();
                 child.Items.InsertAt(0, Items[i - 1]);
                 Items[i - 1] = stolenItem;
-                if(stealFrom.Children.Length > 0)
+                if (stealFrom.Children.Length > 0)
                 {
                     child.Children.InsertAt(0, stealFrom.Children.Pop());
                 }
             }
-            else if(i < Items.Length && Children[i+1].Items.Length > minItems)
+            else if (i < Items.Length && Children[i + 1].Items.Length > minItems)
             {
                 // steal from right child
                 Node child = MutableChild(i);
@@ -657,14 +658,14 @@ namespace CodeExMachina
                 Item stolenItem = stealFrom.Items.RemoveAt(0);
                 child.Items.Append(Items[i]);
                 Items[i] = stolenItem;
-                if(stealFrom.Children.Length > 0)
+                if (stealFrom.Children.Length > 0)
                 {
                     child.Children.Append(stealFrom.Children.RemoveAt(0));
                 }
             }
             else
             {
-                if(i >= Items.Length)
+                if (i >= Items.Length)
                 {
                     i--;
                 }
@@ -809,9 +810,9 @@ namespace CodeExMachina
         /// <returns></returns>
         public bool Reset(CopyOnWriteContext c)
         {
-            foreach(Node child in Children)
+            foreach (Node child in Children)
             {
-                if(!child.Reset(c))
+                if (!child.Reset(c))
                 {
                     return false;
                 }
@@ -828,7 +829,7 @@ namespace CodeExMachina
         {
             string repeat = new string(' ', level);
             w.Write($"{repeat}NODE:{Items}\n");
-            foreach(Node c in Children)
+            foreach (Node c in Children)
             {
                 c.Print(w, level + 1);
             }
@@ -846,14 +847,14 @@ namespace CodeExMachina
     /// </summary>
     public class BTree
     {
-        public int Degree { get; private set; }
+        private int Degree { get; set; }
 
         /// <summary>
         /// Returns the number of items currently in the tree.
         /// </summary>
         public int Length { get; private set; }
-        internal Node Root { get; set; }
-        internal CopyOnWriteContext Cow { get; private set; }
+        private Node Root { get; set; }
+        private CopyOnWriteContext Cow { get; set; }
 
         private BTree()
         { }
@@ -876,7 +877,7 @@ namespace CodeExMachina
         /// <param name="f"></param>
         public BTree(int degree, FreeList f)
         {
-            if(degree <= 1)
+            if (degree <= 1)
             {
                 Environment.FailFast("bad degree");
             }
@@ -963,7 +964,7 @@ namespace CodeExMachina
             else
             {
                 Root = Root.MutableFor(Cow);
-                if(Root.Items.Length >= MaxItems())
+                if (Root.Items.Length >= MaxItems())
                 {
                     (Item item2, Node second) = Root.Split(MaxItems() / 2);
                     Node oldRoot = Root;
@@ -974,7 +975,7 @@ namespace CodeExMachina
                 }
             }
             Item result = Root.Insert(item, MaxItems());
-            if(result == null)
+            if (result == null)
             {
                 Length++;
             }
@@ -1013,19 +1014,19 @@ namespace CodeExMachina
         }
         private Item DeleteItem(Item item, ToRemove typ)
         {
-            if(Root == null || Root.Items.Length == 0)
+            if (Root == null || Root.Items.Length == 0)
             {
                 return null;
             }
             Root = Root.MutableFor(Cow);
             Item result = Root.Remove(item, MinItems(), typ);
-            if(Root.Items.Length == 0 && Root.Children.Length > 0)
+            if (Root.Items.Length == 0 && Root.Children.Length > 0)
             {
                 Node oldRoot = Root;
                 Root = Root.Children[0];
                 _ = Cow.FreeNode(oldRoot);
             }
-            if(result != null)
+            if (result != null)
             {
                 Length--;
             }
@@ -1041,7 +1042,7 @@ namespace CodeExMachina
         /// <param name="iterator"></param>
         public void AscendRange(Item greaterOrEqual, Item lessThan, ItemIterator iterator)
         {
-            if(Root == null)
+            if (Root == null)
             {
                 return;
             }
@@ -1187,7 +1188,7 @@ namespace CodeExMachina
         /// <param name="key"></param>
         /// <returns></returns>
         public bool Has(Item key)
-        {            
+        {
             return Get(key) != null;
         }
 
@@ -1216,15 +1217,16 @@ namespace CodeExMachina
         /// <param name="addNodesToFreeList"></param>
         public void Clear(bool addNodesToFreeList)
         {
-            if(Root != null && addNodesToFreeList)
+            if (Root != null && addNodesToFreeList)
             {
                 _ = Root.Reset(Cow);
             }
             Root = null;
             Length = 0;
-        }        
+        }
     }
-    public enum FreeType
+
+    internal enum FreeType
     {
         /// <summary>
         /// node was freed (available for GC, not stored in freelist)
@@ -1276,7 +1278,7 @@ namespace CodeExMachina
         /// <returns></returns>
         public FreeType FreeNode(Node n)
         {
-            if(ReferenceEquals(n.Cow, this))
+            if (ReferenceEquals(n.Cow, this))
             {
                 // clear to allow GC
                 n.Items.Truncate(0);
@@ -1288,6 +1290,6 @@ namespace CodeExMachina
             {
                 return FreeType.ftNotOwned;
             }
-        }        
+        }
     }
 }
