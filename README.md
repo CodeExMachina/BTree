@@ -14,5 +14,3 @@ Install [with NuGet](https://www.nuget.org/packages/CodeExMachina.BTree/):
 Or via the .NET Core command line interface:
 
     dotnet add package CodeExMachina.BTree
-
-Either command, from Package Manager Console or .NET Core CLI, will download and install CodeExMachina.BTree.
