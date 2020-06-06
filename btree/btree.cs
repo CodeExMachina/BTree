@@ -1192,7 +1192,7 @@ namespace CodeExMachina
         }
 
         /// <summary>
-        /// Less returns true if int(a) < int(b).
+        /// Less returns true if int(a) &lt; int(b).
         /// </summary>        
         public bool Less(Item than)
         {

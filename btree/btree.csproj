@@ -16,4 +16,19 @@
     <PackageTags>BTree</PackageTags>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
   </PropertyGroup>  
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType></DebugType>
+    <DocumentationMarkdown>$(SolutionDir)\API.md</DocumentationMarkdown>
+    <DocumentationFile>bin\Release\netstandard2.0\btree.xml</DocumentationFile>
+    <NoWarn>1591;1701;1702</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <NoWarn>1591;1701;1702</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Vsxmd" Version="1.4.5">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>
