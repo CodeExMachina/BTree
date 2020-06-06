@@ -30,7 +30,8 @@ namespace CodeExMachina
         /// This must provide a strict weak ordering.
         /// If !a.Less(b) &amp;&amp; !b.Less(a), we treat this to mean a == b (i.e. we can only
         /// hold one of either a or b in the tree).
-        /// </summary>        
+        /// </summary>
+        /// <param name="than"></param>        
         bool Less(Item than);
     }
 
@@ -64,7 +65,8 @@ namespace CodeExMachina
 
         /// <summary>
         /// Creates a new free list.
-        /// </summary>        
+        /// </summary>
+        /// <param name="size"></param>
         public FreeList(int size)
         {
             _mu = new object();
@@ -114,7 +116,8 @@ namespace CodeExMachina
     /// ItemIterator allows callers of Ascend* to iterate in-order over portions of
     /// the tree.  When this function returns false, iteration will stop and the
     /// associated Ascend* function will immediately return.
-    /// </summary>    
+    /// </summary>
+    /// <param name="i"></param>
     public delegate bool ItemIterator(Item i);
 
     // Stores items in a node.    
@@ -758,14 +761,17 @@ namespace CodeExMachina
         /// 
         /// BTree(2), for example, will create a 2-3-4 tree (each node contains 1-3 items
         /// and 2-4 children).
-        /// </summary>        
+        /// </summary>
+        /// <param name="degree"></param>
         public BTree(int degree)
             : this(degree, new FreeList())
         { }
 
         /// <summary>
         /// Creates a new B-Tree that uses the given node free list.
-        /// </summary>        
+        /// </summary>
+        /// <param name="degree"></param>
+        /// <param name="f"></param>
         public BTree(int degree, FreeList f)
         {
             if (degree <= 1)
@@ -833,7 +839,8 @@ namespace CodeExMachina
         /// Otherwise, nil is returned.
         /// 
         /// nil cannot be added to the tree (will panic).
-        /// </summary>        
+        /// </summary>
+        /// <param name="item"></param>
         public Item ReplaceOrInsert(Item item)
         {
             if (item == null)
@@ -871,7 +878,8 @@ namespace CodeExMachina
         /// <summary>
         /// Removes an item equal to the passed in item from the tree, returning
         /// it.  If no such item exists, returns nil.
-        /// </summary>        
+        /// </summary>
+        /// <param name="item"></param>
         public Item Delete(Item item)
         {
             return DeleteItem(item, ToRemove.RemoveItem);
@@ -919,7 +927,10 @@ namespace CodeExMachina
         /// <summary>
         /// Calls the iterator for every value in the tree within the range
         /// [greaterOrEqual, lessThan), until iterator returns false.
-        /// </summary>        
+        /// </summary>
+        /// <param name="greaterOrEqual"></param>
+        /// <param name="lessThan"></param>
+        /// <param name="iterator"></param>
         public void AscendRange(Item greaterOrEqual, Item lessThan, ItemIterator iterator)
         {
             if (Root == null)
@@ -932,7 +943,9 @@ namespace CodeExMachina
         /// <summary>
         /// Calls the iterator for every value in the tree within the range
         /// [first, pivot), until iterator returns false.
-        /// </summary>        
+        /// </summary>
+        /// <param name="pivot"></param>
+        /// <param name="iterator"></param>
         public void AscendLessThan(Item pivot, ItemIterator iterator)
         {
             if (Root == null)
@@ -945,7 +958,9 @@ namespace CodeExMachina
         /// <summary>
         /// Calls the iterator for every value in the tree within
         /// the range [pivot, last], until iterator returns false.
-        /// </summary>        
+        /// </summary>
+        /// <param name="pivot"></param>
+        /// <param name="iterator"></param>
         public void AscendGreaterOrEqual(Item pivot, ItemIterator iterator)
         {
             if (Root == null)
@@ -958,7 +973,8 @@ namespace CodeExMachina
         /// <summary>
         /// Calls the iterator for every value in the tree within the range
         /// [first, last], until iterator returns false.
-        /// </summary>        
+        /// </summary>
+        /// <param name="iterator"></param>
         public void Ascend(ItemIterator iterator)
         {
             if (Root == null)
@@ -971,7 +987,10 @@ namespace CodeExMachina
         /// <summary>
         /// Calls the iterator for every value in the tree within the range
         /// [lessOrEqual, greaterThan), until iterator returns false.
-        /// </summary>        
+        /// </summary>
+        /// <param name="lessOrEqual"></param>
+        /// <param name="greaterThan"></param>
+        /// <param name="iterator"></param>
         public void DescendRange(Item lessOrEqual, Item greaterThan, ItemIterator iterator)
         {
             if (Root == null)
@@ -984,7 +1003,9 @@ namespace CodeExMachina
         /// <summary>
         /// Calls the iterator for every value in the tree within the range
         /// [pivot, first], until iterator returns false.
-        /// </summary>        
+        /// </summary>
+        /// <param name="pivot"></param>
+        /// <param name="iterator"></param>
         public void DescendLessOrEqual(Item pivot, ItemIterator iterator)
         {
             if (Root == null)
@@ -997,7 +1018,9 @@ namespace CodeExMachina
         /// <summary>
         /// Calls the iterator for every value in the tree within
         /// the range [last, pivot), until iterator returns false.
-        /// </summary>        
+        /// </summary>
+        /// <param name="pivot"></param>
+        /// <param name="iterator"></param>
         public void DescendGreaterThan(Item pivot, ItemIterator iterator)
         {
             if (Root == null)
@@ -1010,7 +1033,8 @@ namespace CodeExMachina
         /// <summary>
         /// Calls the iterator for every value in the tree within the range
         /// [last, first], until iterator returns false.
-        /// </summary>        
+        /// </summary>
+        /// <param name="iterator"></param>
         public void Descend(ItemIterator iterator)
         {
             if (Root == null)
@@ -1023,7 +1047,8 @@ namespace CodeExMachina
         /// <summary>
         /// Looks for the key item in the tree, returning it.  It returns nil if
         /// unable to find that item.
-        /// </summary>        
+        /// </summary>
+        /// <param name="key"></param>
         public Item Get(Item key)
         {
             return Root?.Get(key);
@@ -1047,7 +1072,8 @@ namespace CodeExMachina
 
         /// <summary>
         /// Returns true if the given key is in the tree.
-        /// </summary>             
+        /// </summary>
+        /// <param name="key"></param>       
         public bool Has(Item key)
         {
             return Get(key) != null;
@@ -1074,7 +1100,8 @@ namespace CodeExMachina
         ///     O(tree size):  when all nodes are owned by another tree, all nodes are
         ///         iterated over looking for nodes to add to the freelist, and due to
         ///         ownership, none are.
-        /// </summary>        
+        /// </summary>
+        /// <param name="addNodesToFreeList"></param>
         public void Clear(bool addNodesToFreeList)
         {
             if (Root != null && addNodesToFreeList)
@@ -1193,7 +1220,8 @@ namespace CodeExMachina
 
         /// <summary>
         /// Less returns true if int(a) &lt; int(b).
-        /// </summary>        
+        /// </summary>
+        /// <param name="than"></param>
         public bool Less(Item than)
         {
             return _v < ((Int)than)._v;

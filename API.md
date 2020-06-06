@@ -4,36 +4,36 @@
 ## Contents
 
 - [BTree](#T-CodeExMachina-BTree 'CodeExMachina.BTree')
-  - [#ctor()](#M-CodeExMachina-BTree-#ctor-System-Int32- 'CodeExMachina.BTree.#ctor(System.Int32)')
-  - [#ctor()](#M-CodeExMachina-BTree-#ctor-System-Int32,CodeExMachina-FreeList- 'CodeExMachina.BTree.#ctor(System.Int32,CodeExMachina.FreeList)')
+  - [#ctor(degree)](#M-CodeExMachina-BTree-#ctor-System-Int32- 'CodeExMachina.BTree.#ctor(System.Int32)')
+  - [#ctor(degree,f)](#M-CodeExMachina-BTree-#ctor-System-Int32,CodeExMachina-FreeList- 'CodeExMachina.BTree.#ctor(System.Int32,CodeExMachina.FreeList)')
   - [Length](#P-CodeExMachina-BTree-Length 'CodeExMachina.BTree.Length')
-  - [Ascend()](#M-CodeExMachina-BTree-Ascend-CodeExMachina-ItemIterator- 'CodeExMachina.BTree.Ascend(CodeExMachina.ItemIterator)')
-  - [AscendGreaterOrEqual()](#M-CodeExMachina-BTree-AscendGreaterOrEqual-CodeExMachina-Item,CodeExMachina-ItemIterator- 'CodeExMachina.BTree.AscendGreaterOrEqual(CodeExMachina.Item,CodeExMachina.ItemIterator)')
-  - [AscendLessThan()](#M-CodeExMachina-BTree-AscendLessThan-CodeExMachina-Item,CodeExMachina-ItemIterator- 'CodeExMachina.BTree.AscendLessThan(CodeExMachina.Item,CodeExMachina.ItemIterator)')
-  - [AscendRange()](#M-CodeExMachina-BTree-AscendRange-CodeExMachina-Item,CodeExMachina-Item,CodeExMachina-ItemIterator- 'CodeExMachina.BTree.AscendRange(CodeExMachina.Item,CodeExMachina.Item,CodeExMachina.ItemIterator)')
-  - [Clear()](#M-CodeExMachina-BTree-Clear-System-Boolean- 'CodeExMachina.BTree.Clear(System.Boolean)')
+  - [Ascend(iterator)](#M-CodeExMachina-BTree-Ascend-CodeExMachina-ItemIterator- 'CodeExMachina.BTree.Ascend(CodeExMachina.ItemIterator)')
+  - [AscendGreaterOrEqual(pivot,iterator)](#M-CodeExMachina-BTree-AscendGreaterOrEqual-CodeExMachina-Item,CodeExMachina-ItemIterator- 'CodeExMachina.BTree.AscendGreaterOrEqual(CodeExMachina.Item,CodeExMachina.ItemIterator)')
+  - [AscendLessThan(pivot,iterator)](#M-CodeExMachina-BTree-AscendLessThan-CodeExMachina-Item,CodeExMachina-ItemIterator- 'CodeExMachina.BTree.AscendLessThan(CodeExMachina.Item,CodeExMachina.ItemIterator)')
+  - [AscendRange(greaterOrEqual,lessThan,iterator)](#M-CodeExMachina-BTree-AscendRange-CodeExMachina-Item,CodeExMachina-Item,CodeExMachina-ItemIterator- 'CodeExMachina.BTree.AscendRange(CodeExMachina.Item,CodeExMachina.Item,CodeExMachina.ItemIterator)')
+  - [Clear(addNodesToFreeList)](#M-CodeExMachina-BTree-Clear-System-Boolean- 'CodeExMachina.BTree.Clear(System.Boolean)')
   - [Clone()](#M-CodeExMachina-BTree-Clone 'CodeExMachina.BTree.Clone')
-  - [Delete()](#M-CodeExMachina-BTree-Delete-CodeExMachina-Item- 'CodeExMachina.BTree.Delete(CodeExMachina.Item)')
+  - [Delete(item)](#M-CodeExMachina-BTree-Delete-CodeExMachina-Item- 'CodeExMachina.BTree.Delete(CodeExMachina.Item)')
   - [DeleteMax()](#M-CodeExMachina-BTree-DeleteMax 'CodeExMachina.BTree.DeleteMax')
   - [DeleteMin()](#M-CodeExMachina-BTree-DeleteMin 'CodeExMachina.BTree.DeleteMin')
-  - [Descend()](#M-CodeExMachina-BTree-Descend-CodeExMachina-ItemIterator- 'CodeExMachina.BTree.Descend(CodeExMachina.ItemIterator)')
-  - [DescendGreaterThan()](#M-CodeExMachina-BTree-DescendGreaterThan-CodeExMachina-Item,CodeExMachina-ItemIterator- 'CodeExMachina.BTree.DescendGreaterThan(CodeExMachina.Item,CodeExMachina.ItemIterator)')
-  - [DescendLessOrEqual()](#M-CodeExMachina-BTree-DescendLessOrEqual-CodeExMachina-Item,CodeExMachina-ItemIterator- 'CodeExMachina.BTree.DescendLessOrEqual(CodeExMachina.Item,CodeExMachina.ItemIterator)')
-  - [DescendRange()](#M-CodeExMachina-BTree-DescendRange-CodeExMachina-Item,CodeExMachina-Item,CodeExMachina-ItemIterator- 'CodeExMachina.BTree.DescendRange(CodeExMachina.Item,CodeExMachina.Item,CodeExMachina.ItemIterator)')
-  - [Get()](#M-CodeExMachina-BTree-Get-CodeExMachina-Item- 'CodeExMachina.BTree.Get(CodeExMachina.Item)')
-  - [Has()](#M-CodeExMachina-BTree-Has-CodeExMachina-Item- 'CodeExMachina.BTree.Has(CodeExMachina.Item)')
+  - [Descend(iterator)](#M-CodeExMachina-BTree-Descend-CodeExMachina-ItemIterator- 'CodeExMachina.BTree.Descend(CodeExMachina.ItemIterator)')
+  - [DescendGreaterThan(pivot,iterator)](#M-CodeExMachina-BTree-DescendGreaterThan-CodeExMachina-Item,CodeExMachina-ItemIterator- 'CodeExMachina.BTree.DescendGreaterThan(CodeExMachina.Item,CodeExMachina.ItemIterator)')
+  - [DescendLessOrEqual(pivot,iterator)](#M-CodeExMachina-BTree-DescendLessOrEqual-CodeExMachina-Item,CodeExMachina-ItemIterator- 'CodeExMachina.BTree.DescendLessOrEqual(CodeExMachina.Item,CodeExMachina.ItemIterator)')
+  - [DescendRange(lessOrEqual,greaterThan,iterator)](#M-CodeExMachina-BTree-DescendRange-CodeExMachina-Item,CodeExMachina-Item,CodeExMachina-ItemIterator- 'CodeExMachina.BTree.DescendRange(CodeExMachina.Item,CodeExMachina.Item,CodeExMachina.ItemIterator)')
+  - [Get(key)](#M-CodeExMachina-BTree-Get-CodeExMachina-Item- 'CodeExMachina.BTree.Get(CodeExMachina.Item)')
+  - [Has(key)](#M-CodeExMachina-BTree-Has-CodeExMachina-Item- 'CodeExMachina.BTree.Has(CodeExMachina.Item)')
   - [Max()](#M-CodeExMachina-BTree-Max 'CodeExMachina.BTree.Max')
   - [MaxItems()](#M-CodeExMachina-BTree-MaxItems 'CodeExMachina.BTree.MaxItems')
   - [Min()](#M-CodeExMachina-BTree-Min 'CodeExMachina.BTree.Min')
   - [MinItems()](#M-CodeExMachina-BTree-MinItems 'CodeExMachina.BTree.MinItems')
-  - [ReplaceOrInsert()](#M-CodeExMachina-BTree-ReplaceOrInsert-CodeExMachina-Item- 'CodeExMachina.BTree.ReplaceOrInsert(CodeExMachina.Item)')
+  - [ReplaceOrInsert(item)](#M-CodeExMachina-BTree-ReplaceOrInsert-CodeExMachina-Item- 'CodeExMachina.BTree.ReplaceOrInsert(CodeExMachina.Item)')
 - [FreeList](#T-CodeExMachina-FreeList 'CodeExMachina.FreeList')
   - [#ctor()](#M-CodeExMachina-FreeList-#ctor 'CodeExMachina.FreeList.#ctor')
-  - [#ctor()](#M-CodeExMachina-FreeList-#ctor-System-Int32- 'CodeExMachina.FreeList.#ctor(System.Int32)')
+  - [#ctor(size)](#M-CodeExMachina-FreeList-#ctor-System-Int32- 'CodeExMachina.FreeList.#ctor(System.Int32)')
 - [Int](#T-CodeExMachina-Int 'CodeExMachina.Int')
-  - [Less()](#M-CodeExMachina-Int-Less-CodeExMachina-Item- 'CodeExMachina.Int.Less(CodeExMachina.Item)')
+  - [Less(than)](#M-CodeExMachina-Int-Less-CodeExMachina-Item- 'CodeExMachina.Int.Less(CodeExMachina.Item)')
 - [Item](#T-CodeExMachina-Item 'CodeExMachina.Item')
-  - [Less()](#M-CodeExMachina-Item-Less-CodeExMachina-Item- 'CodeExMachina.Item.Less(CodeExMachina.Item)')
+  - [Less(than)](#M-CodeExMachina-Item-Less-CodeExMachina-Item- 'CodeExMachina.Item.Less(CodeExMachina.Item)')
 - [ItemIterator](#T-CodeExMachina-ItemIterator 'CodeExMachina.ItemIterator')
 
 <a name='T-CodeExMachina-BTree'></a>
@@ -54,7 +54,7 @@ Write operations are not safe for concurrent mutation by multiple
 tasks, but Read operations are.
 
 <a name='M-CodeExMachina-BTree-#ctor-System-Int32-'></a>
-### #ctor() `constructor`
+### #ctor(degree) `constructor`
 
 ##### Summary
 
@@ -65,10 +65,12 @@ and 2-4 children).
 
 ##### Parameters
 
-This constructor has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| degree | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') |  |
 
 <a name='M-CodeExMachina-BTree-#ctor-System-Int32,CodeExMachina-FreeList-'></a>
-### #ctor() `constructor`
+### #ctor(degree,f) `constructor`
 
 ##### Summary
 
@@ -76,7 +78,10 @@ Creates a new B-Tree that uses the given node free list.
 
 ##### Parameters
 
-This constructor has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| degree | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') |  |
+| f | [CodeExMachina.FreeList](#T-CodeExMachina-FreeList 'CodeExMachina.FreeList') |  |
 
 <a name='P-CodeExMachina-BTree-Length'></a>
 ### Length `property`
@@ -86,7 +91,7 @@ This constructor has no parameters.
 Returns the number of items currently in the tree.
 
 <a name='M-CodeExMachina-BTree-Ascend-CodeExMachina-ItemIterator-'></a>
-### Ascend() `method`
+### Ascend(iterator) `method`
 
 ##### Summary
 
@@ -95,10 +100,12 @@ Calls the iterator for every value in the tree within the range
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| iterator | [CodeExMachina.ItemIterator](#T-CodeExMachina-ItemIterator 'CodeExMachina.ItemIterator') |  |
 
 <a name='M-CodeExMachina-BTree-AscendGreaterOrEqual-CodeExMachina-Item,CodeExMachina-ItemIterator-'></a>
-### AscendGreaterOrEqual() `method`
+### AscendGreaterOrEqual(pivot,iterator) `method`
 
 ##### Summary
 
@@ -107,10 +114,13 @@ the range [pivot, last], until iterator returns false.
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| pivot | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
+| iterator | [CodeExMachina.ItemIterator](#T-CodeExMachina-ItemIterator 'CodeExMachina.ItemIterator') |  |
 
 <a name='M-CodeExMachina-BTree-AscendLessThan-CodeExMachina-Item,CodeExMachina-ItemIterator-'></a>
-### AscendLessThan() `method`
+### AscendLessThan(pivot,iterator) `method`
 
 ##### Summary
 
@@ -119,10 +129,13 @@ Calls the iterator for every value in the tree within the range
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| pivot | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
+| iterator | [CodeExMachina.ItemIterator](#T-CodeExMachina-ItemIterator 'CodeExMachina.ItemIterator') |  |
 
 <a name='M-CodeExMachina-BTree-AscendRange-CodeExMachina-Item,CodeExMachina-Item,CodeExMachina-ItemIterator-'></a>
-### AscendRange() `method`
+### AscendRange(greaterOrEqual,lessThan,iterator) `method`
 
 ##### Summary
 
@@ -131,10 +144,14 @@ Calls the iterator for every value in the tree within the range
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| greaterOrEqual | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
+| lessThan | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
+| iterator | [CodeExMachina.ItemIterator](#T-CodeExMachina-ItemIterator 'CodeExMachina.ItemIterator') |  |
 
 <a name='M-CodeExMachina-BTree-Clear-System-Boolean-'></a>
-### Clear() `method`
+### Clear(addNodesToFreeList) `method`
 
 ##### Summary
 
@@ -161,7 +178,9 @@ This call takes:
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| addNodesToFreeList | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') |  |
 
 <a name='M-CodeExMachina-BTree-Clone'></a>
 ### Clone() `method`
@@ -185,7 +204,7 @@ the original performance characteristics of the original tree.
 This method has no parameters.
 
 <a name='M-CodeExMachina-BTree-Delete-CodeExMachina-Item-'></a>
-### Delete() `method`
+### Delete(item) `method`
 
 ##### Summary
 
@@ -194,7 +213,9 @@ it.  If no such item exists, returns nil.
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| item | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
 
 <a name='M-CodeExMachina-BTree-DeleteMax'></a>
 ### DeleteMax() `method`
@@ -221,7 +242,7 @@ If no such item exists, returns nil.
 This method has no parameters.
 
 <a name='M-CodeExMachina-BTree-Descend-CodeExMachina-ItemIterator-'></a>
-### Descend() `method`
+### Descend(iterator) `method`
 
 ##### Summary
 
@@ -230,10 +251,12 @@ Calls the iterator for every value in the tree within the range
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| iterator | [CodeExMachina.ItemIterator](#T-CodeExMachina-ItemIterator 'CodeExMachina.ItemIterator') |  |
 
 <a name='M-CodeExMachina-BTree-DescendGreaterThan-CodeExMachina-Item,CodeExMachina-ItemIterator-'></a>
-### DescendGreaterThan() `method`
+### DescendGreaterThan(pivot,iterator) `method`
 
 ##### Summary
 
@@ -242,10 +265,13 @@ the range [last, pivot), until iterator returns false.
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| pivot | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
+| iterator | [CodeExMachina.ItemIterator](#T-CodeExMachina-ItemIterator 'CodeExMachina.ItemIterator') |  |
 
 <a name='M-CodeExMachina-BTree-DescendLessOrEqual-CodeExMachina-Item,CodeExMachina-ItemIterator-'></a>
-### DescendLessOrEqual() `method`
+### DescendLessOrEqual(pivot,iterator) `method`
 
 ##### Summary
 
@@ -254,10 +280,13 @@ Calls the iterator for every value in the tree within the range
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| pivot | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
+| iterator | [CodeExMachina.ItemIterator](#T-CodeExMachina-ItemIterator 'CodeExMachina.ItemIterator') |  |
 
 <a name='M-CodeExMachina-BTree-DescendRange-CodeExMachina-Item,CodeExMachina-Item,CodeExMachina-ItemIterator-'></a>
-### DescendRange() `method`
+### DescendRange(lessOrEqual,greaterThan,iterator) `method`
 
 ##### Summary
 
@@ -266,10 +295,14 @@ Calls the iterator for every value in the tree within the range
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| lessOrEqual | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
+| greaterThan | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
+| iterator | [CodeExMachina.ItemIterator](#T-CodeExMachina-ItemIterator 'CodeExMachina.ItemIterator') |  |
 
 <a name='M-CodeExMachina-BTree-Get-CodeExMachina-Item-'></a>
-### Get() `method`
+### Get(key) `method`
 
 ##### Summary
 
@@ -278,10 +311,12 @@ unable to find that item.
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| key | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
 
 <a name='M-CodeExMachina-BTree-Has-CodeExMachina-Item-'></a>
-### Has() `method`
+### Has(key) `method`
 
 ##### Summary
 
@@ -289,7 +324,9 @@ Returns true if the given key is in the tree.
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| key | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
 
 <a name='M-CodeExMachina-BTree-Max'></a>
 ### Max() `method`
@@ -337,7 +374,7 @@ root node).
 This method has no parameters.
 
 <a name='M-CodeExMachina-BTree-ReplaceOrInsert-CodeExMachina-Item-'></a>
-### ReplaceOrInsert() `method`
+### ReplaceOrInsert(item) `method`
 
 ##### Summary
 
@@ -349,7 +386,9 @@ nil cannot be added to the tree (will panic).
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| item | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
 
 <a name='T-CodeExMachina-FreeList'></a>
 ## FreeList `type`
@@ -377,7 +416,7 @@ Creates a new free list with default size.
 This constructor has no parameters.
 
 <a name='M-CodeExMachina-FreeList-#ctor-System-Int32-'></a>
-### #ctor() `constructor`
+### #ctor(size) `constructor`
 
 ##### Summary
 
@@ -385,7 +424,9 @@ Creates a new free list.
 
 ##### Parameters
 
-This constructor has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| size | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') |  |
 
 <a name='T-CodeExMachina-Int'></a>
 ## Int `type`
@@ -399,7 +440,7 @@ CodeExMachina
 Int implements the Item interface for integers.
 
 <a name='M-CodeExMachina-Int-Less-CodeExMachina-Item-'></a>
-### Less() `method`
+### Less(than) `method`
 
 ##### Summary
 
@@ -407,7 +448,9 @@ Less returns true if int(a) < int(b).
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| than | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
 
 <a name='T-CodeExMachina-Item'></a>
 ## Item `type`
@@ -421,7 +464,7 @@ CodeExMachina
 Item represents a single object in the tree.
 
 <a name='M-CodeExMachina-Item-Less-CodeExMachina-Item-'></a>
-### Less() `method`
+### Less(than) `method`
 
 ##### Summary
 
@@ -433,7 +476,9 @@ hold one of either a or b in the tree).
 
 ##### Parameters
 
-This method has no parameters.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| than | [CodeExMachina.Item](#T-CodeExMachina-Item 'CodeExMachina.Item') |  |
 
 <a name='T-CodeExMachina-ItemIterator'></a>
 ## ItemIterator `type`
@@ -447,3 +492,9 @@ CodeExMachina
 ItemIterator allows callers of Ascend* to iterate in-order over portions of
 the tree.  When this function returns false, iteration will stop and the
 associated Ascend* function will immediately return.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| i | [T:CodeExMachina.ItemIterator](#T-T-CodeExMachina-ItemIterator 'T:CodeExMachina.ItemIterator') |  |
