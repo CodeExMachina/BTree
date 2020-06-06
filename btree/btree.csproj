@@ -11,9 +11,9 @@
     <Description>This package provides an in-memory B-Tree implementation for C#, useful as an ordered, mutable data structure.</Description>
     <RootNamespace>CodeExMachina</RootNamespace>
     <PackOnBuild>true</PackOnBuild>
-    <PackageVersion>0.1.3</PackageVersion>
-    <PackageReleaseNotes>Updated documentation.</PackageReleaseNotes>
+    <PackageVersion>0.1.4</PackageVersion>
+    <PackageReleaseNotes>Added Int struct.</PackageReleaseNotes>
     <PackageTags>BTree</PackageTags>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-  </PropertyGroup>
+  </PropertyGroup>  
 </Project>

@@ -1142,4 +1142,176 @@ namespace CodeExMachina
             }
         }
     }
+
+    /// <summary>
+    /// Int implements the Item interface for integers.
+    /// </summary>
+    public struct Int : IComparable, IComparable<int>,
+        IConvertible, IEquatable<int>, IFormattable, Item
+    {
+        private readonly int _v;
+
+        public Int(int v)
+        {
+            _v = v;
+        }
+
+        public override string ToString()
+        {
+            return _v.ToString();
+        }
+
+        public int CompareTo(int other)
+        {
+            return _v.CompareTo(other);
+        }
+
+        public int CompareTo(object obj)
+        {
+            return _v.CompareTo(obj);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return _v.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return _v.GetHashCode();
+        }
+
+        public bool Equals(int other)
+        {
+            return _v == other;
+        }
+
+        public TypeCode GetTypeCode()
+        {
+            return _v.GetTypeCode();
+        }
+
+        /// <summary>
+        /// Less returns true if int(a) < int(b).
+        /// </summary>        
+        public bool Less(Item than)
+        {
+            return _v < ((Int)than)._v;
+        }
+
+        public bool ToBoolean(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToBoolean(provider);
+        }
+
+        public byte ToByte(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToByte(provider);
+        }
+
+        public char ToChar(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToChar(provider);
+        }
+
+        public DateTime ToDateTime(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToDateTime(provider);
+        }
+
+        public decimal ToDecimal(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToDecimal(provider);
+        }
+
+        public double ToDouble(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToDouble(provider);
+        }
+
+        public short ToInt16(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToInt16(provider);
+        }
+
+        public int ToInt32(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToInt32(provider);
+        }
+
+        public long ToInt64(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToInt64(provider);
+        }
+
+        public sbyte ToSByte(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToSByte(provider);
+        }
+
+        public float ToSingle(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToSingle(provider);
+        }
+
+        public string ToString(IFormatProvider provider)
+        {
+            return _v.ToString(provider);
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return _v.ToString(format, formatProvider);
+        }
+
+        public object ToType(Type conversionType, IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToType(conversionType, provider);
+        }
+
+        public ushort ToUInt16(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToUInt16(provider);
+        }
+
+        public uint ToUInt32(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToUInt32(provider);
+        }
+
+        public ulong ToUInt64(IFormatProvider provider)
+        {
+            return ((IConvertible)_v).ToUInt64(provider);
+        }
+
+        public static bool operator <(Int a, Int b)
+        {
+            return a._v < b._v;
+        }
+
+        public static bool operator >(Int a, Int b)
+        {
+            return a._v > b._v;
+        }
+
+        public static bool operator !=(Int a, Int b)
+        {
+            return a._v != b._v;
+        }
+
+        public static bool operator ==(Int a, Int b)
+        {
+            return a._v == b._v;
+        }
+
+        public static bool operator !=(Int a, Item b)
+        {
+            return a != (Int)b;
+        }
+
+        public static bool operator ==(Int a, Item b)
+        {
+            return a == (Int)b;
+        }
+    }
 }
