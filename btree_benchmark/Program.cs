@@ -30,12 +30,12 @@ namespace btree_benchmark
 
         private int _i = 0;
         private int _size = 0;
-        private List<Item> _insertP;
-        private BTree _tr;
+        private List<Int> _insertP;
+        private BTree<Int> _tr;
 
-        private List<Item> Perm(int n)
+        private List<Int> Perm(int n)
         {
-            List<Item> list = new List<Item>();
+            List<Int> list = new List<Int>();
             foreach (int v in _rand.Perm(n))
             {
                 list.Add(new Int(v));
@@ -46,8 +46,8 @@ namespace btree_benchmark
         private void InitBenchmark(int size)
         {
             _insertP = Perm(size);
-            _tr = new BTree(BTreeDegree);
-            foreach (Item item in _insertP)
+            _tr = new BTree<Int>(BTreeDegree, new IntComparer());
+            foreach (Int item in _insertP)
             {
                 _tr.ReplaceOrInsert(item);
             }
@@ -61,9 +61,9 @@ namespace btree_benchmark
         }
 
         [Benchmark]
-        public BTree BenchmarkInsert()
+        public BTree<Int> BenchmarkInsert()
         {
-            var tr = new BTree(BTreeDegree);
+            var tr = new BTree<Int>(BTreeDegree, new IntComparer());
             foreach (var item in _insertP)
             {
                 tr.ReplaceOrInsert(item);
@@ -81,7 +81,7 @@ namespace btree_benchmark
         [Benchmark]
         public int BenchmarkSeek()
         {
-            _tr.AscendGreaterOrEqual(new Int(_i % _size), (Item i) =>
+            _tr.AscendGreaterOrEqual(new Int(_i % _size), (Int i) =>
             {
                 return false;
             });

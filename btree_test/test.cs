@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 using CodeExMachina;
+using BTree = CodeExMachina.BTree<CodeExMachina.Int>;
 
 namespace btree_test
 {
@@ -59,9 +60,9 @@ namespace btree_test
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        private List<Item> Perm(int n)
+        private List<Int> Perm(int n)
         {
-            List<Item> list = new List<Item>();
+            List<Int> list = new List<Int>();
             foreach (int v in _rand.Perm(n))
             {
                 list.Add(new Int(v));
@@ -74,9 +75,9 @@ namespace btree_test
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        private List<Item> Rang(int n)
+        private List<Int> Rang(int n)
         {
-            List<Item> list = new List<Item>();
+            List<Int> list = new List<Int>();
             for (int i = 0; i < n; i++)
             {
                 list.Add(new Int(i));
@@ -89,10 +90,10 @@ namespace btree_test
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
-        private List<Item> All(BTree t)
+        private List<Int> All(BTree t)
         {
-            List<Item> list = new List<Item>();
-            t.Ascend((Item a) =>
+            List<Int> list = new List<Int>();
+            t.Ascend((Int a) =>
             {
                 list.Add(a);
                 return true;
@@ -100,9 +101,9 @@ namespace btree_test
             return list;
         }
 
-        private List<Item> RangRev(int n)
+        private List<Int> RangRev(int n)
         {
-            List<Item> list = new List<Item>();
+            List<Int> list = new List<Int>();
             for (int i = n - 1; i >= 0; i--)
             {
                 list.Add(new Int(i));
@@ -110,10 +111,10 @@ namespace btree_test
             return list;
         }
 
-        private List<Item> AllRev(BTree t)
+        private List<Int> AllRev(BTree t)
         {
-            List<Item> list = new List<Item>();
-            t.Descend((Item a) =>
+            List<Int> list = new List<Int>();
+            t.Descend((Int a) =>
             {
                 list.Add(a);
                 return true;
@@ -123,10 +124,10 @@ namespace btree_test
 
         private const int BTreeDegree = 32;
 
-        private bool DeepEqual(IEnumerable<Item> a, IEnumerable<Item> b)
+        private bool DeepEqual(IEnumerable<Int> a, IEnumerable<Int> b)
         {
-            List<Item> al = new List<Item>(a);
-            List<Item> bl = new List<Item>(b);
+            List<Int> al = new List<Int>(a);
+            List<Int> bl = new List<Int>(b);
 
             if (al.Count != bl.Count)
                 return false;
@@ -151,38 +152,38 @@ namespace btree_test
         [Fact]
         public void TestBTree()
         {
-            BTree tr = new BTree(BTreeDegree);
+            BTree tr = new BTree(BTreeDegree, new IntComparer());
             const int treeSize = 10000;
             for (int i = 0; i < 10; i++)
             {
-                Item min = tr.Min();
+                Int min = tr.Min();
                 if (min != null)
                 {
                     Assert.False(min != null, $"empty min, got {min}");
                 }
-                Item max = tr.Max();
+                Int max = tr.Max();
                 if (max != null)
                 {
                     Assert.False(max != null, $"empty max, got {max}");
                 }
-                foreach (Item item in Perm(treeSize))
+                foreach (Int item in Perm(treeSize))
                 {
-                    Item x = tr.ReplaceOrInsert(item);
+                    Int x = tr.ReplaceOrInsert(item);
                     if (x != null)
                     {
                         Assert.False(x != null, $"insert found item {item}");
                     }
                 }
-                foreach (Item item in Perm(treeSize))
+                foreach (Int item in Perm(treeSize))
                 {
-                    Item x = tr.ReplaceOrInsert(item);
+                    Int x = tr.ReplaceOrInsert(item);
                     if (x == null)
                     {
                         Assert.False(x == null, $"insert didn't find item {item}");
                     }
                 }
                 min = tr.Min();
-                Item want = new Int(0);
+                Int want = new Int(0);
                 if ((Int)min != want)
                 {
                     Assert.False(true, $"min: want {want}, got {min}");
@@ -193,21 +194,21 @@ namespace btree_test
                 {
                     Assert.False(true, $"max: want {want}, got {max}");
                 }
-                List<Item> got = All(tr);
-                List<Item> want2 = Rang(treeSize);
+                List<Int> got = All(tr);
+                List<Int> want2 = Rang(treeSize);
                 if (!DeepEqual(got, want2))
                 {
                     Assert.False(true, $"mismatch:\n got: {got.Dump()}\nwant: {want2.Dump()}");
                 }
-                List<Item> gotrev = AllRev(tr);
-                List<Item> wantrev = RangRev(treeSize);
+                List<Int> gotrev = AllRev(tr);
+                List<Int> wantrev = RangRev(treeSize);
                 if (!DeepEqual(gotrev, wantrev))
                 {
                     Assert.False(true, $"mismatch:\n got: {got.Dump()}\nwant: {wantrev.Dump()}");
                 }
-                foreach (Item item in Perm(treeSize))
+                foreach (Int item in Perm(treeSize))
                 {
-                    Item x = tr.Delete(item);
+                    Int x = tr.Delete(item);
                     if (x == null)
                     {
                         Assert.False(x == null, $"Didn't find {item}");
@@ -223,7 +224,7 @@ namespace btree_test
 
         private void ExampleBTree()
         {
-            BTree tr = new BTree(BTreeDegree);
+            BTree tr = new BTree(BTreeDegree, new IntComparer());
             for (int i = 0; i < 10; i++)
             {
                 _ = tr.ReplaceOrInsert(new Int(i));
@@ -258,17 +259,17 @@ namespace btree_test
         [Fact]
         public void TestDeleteMin()
         {
-            BTree tr = new BTree(3);
-            foreach (Item v in Perm(100))
+            BTree tr = new BTree(3, new IntComparer());
+            foreach (Int v in Perm(100))
             {
                 _ = tr.ReplaceOrInsert(v);
             }
-            List<Item> got = new List<Item>();
-            for (Item v = tr.DeleteMin(); v != null; v = tr.DeleteMin())
+            List<Int> got = new List<Int>();
+            for (Int v = tr.DeleteMin(); v != null; v = tr.DeleteMin())
             {
                 got.Add(v);
             }
-            List<Item> want = Rang(100);
+            List<Int> want = Rang(100);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"ascendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -278,13 +279,13 @@ namespace btree_test
         [Fact]
         public void TestDeleteMax()
         {
-            BTree tr = new BTree(3);
-            foreach (Item v in Perm(100))
+            BTree tr = new BTree(3, new IntComparer());
+            foreach (Int v in Perm(100))
             {
                 _ = tr.ReplaceOrInsert(v);
             }
-            List<Item> got = new List<Item>();
-            for (Item v = tr.DeleteMax(); v != null; v = tr.DeleteMax())
+            List<Int> got = new List<Int>();
+            for (Int v = tr.DeleteMax(); v != null; v = tr.DeleteMax())
             {
                 got.Add(v);
             }
@@ -292,7 +293,7 @@ namespace btree_test
             {
                 (got[i], got[got.Count - i - 1]) = (got[got.Count - i - 1], got[i]);
             }
-            List<Item> want = Rang(100);
+            List<Int> want = Rang(100);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"ascendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
@@ -302,24 +303,24 @@ namespace btree_test
         [Fact]
         public void TestAscendRange()
         {
-            BTree tr = new BTree(2);
-            foreach (Item v in Perm(100))
+            BTree tr = new BTree(2, new IntComparer());
+            foreach (Int v in Perm(100))
             {
                 _ = tr.ReplaceOrInsert(v);
             }
-            List<Item> got = new List<Item>();
-            tr.AscendRange(new Int(40), new Int(60), (Item a) =>
+            List<Int> got = new List<Int>();
+            tr.AscendRange(new Int(40), new Int(60), (Int a) =>
             {
                 got.Add(a);
                 return true;
             });
-            IEnumerable<Item> want = Rang(100).GetRange(40, 60 - 40);
+            IEnumerable<Int> want = Rang(100).GetRange(40, 60 - 40);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"ascendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
             }
             got.Clear();
-            tr.AscendRange(new Int(40), new Int(60), (Item a) =>
+            tr.AscendRange(new Int(40), new Int(60), (Int a) =>
             {
                 if ((Int)a > new Int(50))
                 {
@@ -339,24 +340,24 @@ namespace btree_test
         [Fact]
         public void TestDescendRange()
         {
-            BTree tr = new BTree(2);
-            foreach (Item v in Perm(100))
+            BTree tr = new BTree(2, new IntComparer());
+            foreach (Int v in Perm(100))
             {
                 _ = tr.ReplaceOrInsert(v);
             }
-            List<Item> got = new List<Item>();
-            tr.DescendRange(new Int(60), new Int(40), (Item a) =>
+            List<Int> got = new List<Int>();
+            tr.DescendRange(new Int(60), new Int(40), (Int a) =>
             {
                 got.Add(a);
                 return true;
             });
-            IEnumerable<Item> want = RangRev(100).GetRange(39, 59 - 39);
+            IEnumerable<Int> want = RangRev(100).GetRange(39, 59 - 39);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"descendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
             }
             got.Clear();
-            tr.DescendRange(new Int(60), new Int(40), (Item a) =>
+            tr.DescendRange(new Int(60), new Int(40), (Int a) =>
             {
                 if ((Int)a < new Int(50))
                 {
@@ -376,24 +377,24 @@ namespace btree_test
         [Fact]
         public void TestAscendLessThan()
         {
-            BTree tr = new BTree(BTreeDegree);
-            foreach (Item v in Perm(100))
+            BTree tr = new BTree(BTreeDegree, new IntComparer());
+            foreach (Int v in Perm(100))
             {
                 _ = tr.ReplaceOrInsert(v);
             }
-            List<Item> got = new List<Item>();
-            tr.AscendLessThan(new Int(60), (Item a) =>
+            List<Int> got = new List<Int>();
+            tr.AscendLessThan(new Int(60), (Int a) =>
             {
                 got.Add(a);
                 return true;
             });
-            IEnumerable<Item> want = Rang(100).GetRange(0, 60);
+            IEnumerable<Int> want = Rang(100).GetRange(0, 60);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"ascendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
             }
             got.Clear();
-            tr.AscendLessThan(new Int(60), (Item a) =>
+            tr.AscendLessThan(new Int(60), (Int a) =>
             {
                 if ((Int)a > new Int(50))
                 {
@@ -413,24 +414,24 @@ namespace btree_test
         [Fact]
         public void TestDescendLessOrEqual()
         {
-            BTree tr = new BTree(BTreeDegree);
-            foreach (Item v in Perm(100))
+            BTree tr = new BTree(BTreeDegree, new IntComparer());
+            foreach (Int v in Perm(100))
             {
                 _ = tr.ReplaceOrInsert(v);
             }
-            List<Item> got = new List<Item>();
-            tr.DescendLessOrEqual(new Int(40), (Item a) =>
+            List<Int> got = new List<Int>();
+            tr.DescendLessOrEqual(new Int(40), (Int a) =>
             {
                 got.Add(a);
                 return true;
             });
-            IEnumerable<Item> want = RangRev(100).GetRange(59, 100 - 59);
+            IEnumerable<Int> want = RangRev(100).GetRange(59, 100 - 59);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"descendlessorequal:\n got: {got.Dump()}\nwant: {want.Dump()}");
             }
             got.Clear();
-            tr.DescendLessOrEqual(new Int(60), (Item a) =>
+            tr.DescendLessOrEqual(new Int(60), (Int a) =>
             {
                 if ((Int)a < new Int(50))
                 {
@@ -450,24 +451,24 @@ namespace btree_test
         [Fact]
         public void TestAscendGreaterOrEqual()
         {
-            BTree tr = new BTree(BTreeDegree);
-            foreach (Item v in Perm(100))
+            BTree tr = new BTree(BTreeDegree, new IntComparer());
+            foreach (Int v in Perm(100))
             {
                 _ = tr.ReplaceOrInsert(v);
             }
-            List<Item> got = new List<Item>();
-            tr.AscendGreaterOrEqual(new Int(40), (Item a) =>
+            List<Int> got = new List<Int>();
+            tr.AscendGreaterOrEqual(new Int(40), (Int a) =>
             {
                 got.Add(a);
                 return true;
             });
-            IEnumerable<Item> want = Rang(100).GetRange(40, 100 - 40);
+            IEnumerable<Int> want = Rang(100).GetRange(40, 100 - 40);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"ascendrange:\n got: {got.Dump()}\nwant: {want.Dump()}");
             }
             got.Clear();
-            tr.AscendGreaterOrEqual(new Int(40), (Item a) =>
+            tr.AscendGreaterOrEqual(new Int(40), (Int a) =>
             {
                 if ((Int)a > new Int(50))
                 {
@@ -487,24 +488,24 @@ namespace btree_test
         [Fact]
         public void TestDescendGreaterThan()
         {
-            BTree tr = new BTree(BTreeDegree);
-            foreach (Item v in Perm(100))
+            BTree tr = new BTree(BTreeDegree, new IntComparer());
+            foreach (Int v in Perm(100))
             {
                 _ = tr.ReplaceOrInsert(v);
             }
-            List<Item> got = new List<Item>();
-            tr.DescendGreaterThan(new Int(40), (Item a) =>
+            List<Int> got = new List<Int>();
+            tr.DescendGreaterThan(new Int(40), (Int a) =>
             {
                 got.Add(a);
                 return true;
             });
-            IEnumerable<Item> want = RangRev(100).GetRange(0, 59);
+            IEnumerable<Int> want = RangRev(100).GetRange(0, 59);
             if (!DeepEqual(got, want))
             {
                 Assert.False(true, $"descendgreaterthan:\n got: {got.Dump()}\nwant: {want.Dump()}");
             }
             got.Clear();
-            tr.DescendGreaterThan(new Int(40), (Item a) =>
+            tr.DescendGreaterThan(new Int(40), (Int a) =>
             {
                 if ((Int)a < new Int(50))
                 {
@@ -523,7 +524,7 @@ namespace btree_test
 
         private const int cloneTestSize = 10000;
 
-        private void CloneTest(BTree b, int start, List<Item> p, CountdownEvent wg, List<BTree> trees, object mutex)
+        private void CloneTest(BTree b, int start, List<Int> p, CountdownEvent wg, List<BTree> trees, object mutex)
         {
             _output.WriteLine($"Starting new clone at {start}");
             lock (mutex)
@@ -548,13 +549,13 @@ namespace btree_test
         [Fact]
         public void TestCloneConcurrentOperations()
         {
-            BTree b = new BTree(BTreeDegree);
+            BTree b = new BTree(BTreeDegree, new IntComparer());
             List<BTree> trees = new List<BTree>();
-            List<Item> p = Perm(cloneTestSize);
+            List<Int> p = Perm(cloneTestSize);
             CountdownEvent wg = new CountdownEvent(1);
             _ = Task.Run(() => CloneTest(b, 0, p, wg, trees, new object()));
             wg.Wait();
-            List<Item> want = Rang(cloneTestSize);
+            List<Int> want = Rang(cloneTestSize);
             _output.WriteLine($"Starting equality checks on {trees.Count} trees");
             int i = 0;
             foreach (BTree tree in trees)
